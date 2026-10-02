@@ -6,7 +6,13 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
+from typing import TYPE_CHECKING
 
+from sqlalchemy.orm import relationship
+
+if TYPE_CHECKING:
+    from app.models.profile import Profile
+    from app.models.resume import Resume
 
 class User(Base):
     __tablename__ = "users"
@@ -30,4 +36,15 @@ class User(Base):
         nullable=False,
         server_default=func.now(),
         onupdate=func.now(),
+    )
+    
+    profile: Mapped["Profile"] = relationship(
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+
+    resumes: Mapped[list["Resume"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
     )

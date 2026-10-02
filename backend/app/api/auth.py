@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_current_user
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db.session import get_db
+from app.models.profile import Profile
 from app.models.user import User
 from app.schemas.auth import TokenOut, UserLogin, UserOut, UserRegister
 
@@ -25,6 +26,8 @@ def register(data: UserRegister, db: Session = Depends(get_db)) -> User:
         hashed_password=hash_password(data.password),
         full_name=data.full_name,
     )
+    # Create the empty profile eagerly so every user always has one.
+    user.profile = Profile()
     db.add(user)
     db.commit()
     db.refresh(user)

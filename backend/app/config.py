@@ -28,5 +28,9 @@ class Settings(BaseSettings):
     jwt_secret: str
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 24 * 7  # 1 week
+
+        # Uploads
+    upload_dir: str = "/app/uploads"
+    max_resume_size_bytes: int = 5 * 1024 * 1024  # 5 MB
     
 settings = Settings()
