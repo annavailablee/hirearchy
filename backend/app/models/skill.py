@@ -33,12 +33,6 @@ class Skill(Base):
         back_populates="skill", cascade="all, delete-orphan"
     )
 
-    job_links: Mapped[list["JobSkill"]] = relationship(
-        cascade="all, delete-orphan",
-        foreign_keys="JobSkill.skill_id",
-    )
-
-
 class ResumeSkill(Base):
     """
     A skill detected on a specific resume.
