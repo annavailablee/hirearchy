@@ -18,6 +18,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
+    from app.models.skill import ResumeSkill
     from app.models.user import User
 
 
@@ -70,3 +71,7 @@ class Resume(Base):
     )
 
     user: Mapped["User"] = relationship(back_populates="resumes")
+
+    skill_links: Mapped[list["ResumeSkill"]] = relationship(
+        back_populates="resume", cascade="all, delete-orphan"
+    )
