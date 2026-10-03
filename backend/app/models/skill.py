@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.models.resume import Resume
+    from app.models.job import JobSkill
 
 
 class Skill(Base):
@@ -30,6 +31,11 @@ class Skill(Base):
 
     resume_links: Mapped[list["ResumeSkill"]] = relationship(
         back_populates="skill", cascade="all, delete-orphan"
+    )
+
+    job_links: Mapped[list["JobSkill"]] = relationship(
+        cascade="all, delete-orphan",
+        foreign_keys="JobSkill.skill_id",
     )
 
 
