@@ -28,3 +28,9 @@ class ResumeDetailOut(ResumeOut):
 class ResumeUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=120)
     is_primary: bool | None = None
+
+class ResumeSkillOut(BaseModel):
+    canonical: str
+    category: str
+    matched_text: str
+    context: str | None

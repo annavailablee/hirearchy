@@ -9,9 +9,12 @@ from app.config import settings
 from app.db.session import get_db
 from app.models.resume import Resume
 from app.models.user import User
-from app.schemas.resume import ResumeDetailOut, ResumeOut, ResumeUpdate
 from app.services import storage
 from app.services.pdf_extraction import PdfExtractionError, extract_text_from_pdf, looks_like_pdf
+from app.models.skill import ResumeSkill, Skill
+from app.schemas.resume import ResumeDetailOut, ResumeOut, ResumeSkillOut, ResumeUpdate
+from app.services.skill_extraction import extract_skills
+from app.services.skill_repository import persist_resume_skills
 
 router = APIRouter(prefix="/resumes", tags=["resumes"])
 
@@ -96,6 +99,11 @@ async def upload_resume(
         is_primary=(has_any is None),
     )
     db.add(resume)
+    db.flush()  # ensure resume.id is usable for FK inserts
+
+    if extraction_status == "success" and raw_text:
+        persist_resume_skills(db, resume, extract_skills(raw_text))
+
     db.commit()
     db.refresh(resume)
     return resume
@@ -175,3 +183,28 @@ def delete_resume(
     # Delete the file after the DB row is gone. If the file delete fails,
     # the DB is consistent and we just have an orphan — acceptable.
     storage.delete(storage_path)
+
+@router.get("/{resume_id}/skills", response_model=list[ResumeSkillOut])
+def list_resume_skills(
+    resume_id: uuid.UUID,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[ResumeSkillOut]:
+    resume = _get_owned_resume(resume_id, user, db)
+
+    rows = db.execute(
+        select(ResumeSkill, Skill)
+        .join(Skill, Skill.id == ResumeSkill.skill_id)
+        .where(ResumeSkill.resume_id == resume.id)
+        .order_by(Skill.canonical)
+    ).all()
+
+    return [
+        ResumeSkillOut(
+            canonical=skill.canonical,
+            category=skill.category,
+            matched_text=rs.matched_text,
+            context=rs.context,
+        )
+        for rs, skill in rows
+    ]
