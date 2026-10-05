@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.api import (
     applications,
     auth,
+    dashboard,
     deadlines,
     health,
     insights,
@@ -27,6 +28,7 @@ app.include_router(jobs.router)
 app.include_router(applications.router)
 app.include_router(deadlines.router)
 app.include_router(insights.router)
+app.include_router(dashboard.router)
 
 
 @app.get("/")
