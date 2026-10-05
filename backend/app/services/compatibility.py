@@ -13,10 +13,9 @@ Category weights sum to 100:
 The algorithm is a pure function: takes job and user inputs, returns a score.
 It does not touch the database — the endpoint assembles inputs and calls it.
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from app.schemas.match import CategoryScore, MatchResultOut, SkillEvidence
-
 
 WEIGHTS = {
     "skills": 50,
@@ -146,10 +145,18 @@ def _score_education(job: JobMatchInput, user: UserMatchInput) -> tuple[float, f
 def _score_experience(job: JobMatchInput, user: UserMatchInput) -> tuple[float, float, str | None]:
     if not job.experience_level or not user.experience_level:
         return 20.0, 20.0, None
-    if job.experience_level not in _EXPERIENCE_ORDER or user.experience_level not in _EXPERIENCE_ORDER:
+
+    if (
+        job.experience_level not in _EXPERIENCE_ORDER
+        or user.experience_level not in _EXPERIENCE_ORDER
+    ):
         return 20.0, 20.0, None
 
-    gap = _EXPERIENCE_ORDER[job.experience_level] - _EXPERIENCE_ORDER[user.experience_level]
+    gap = (
+        _EXPERIENCE_ORDER[job.experience_level]
+        - _EXPERIENCE_ORDER[user.experience_level]
+    )
+
     if gap <= 0:
         return 20.0, 20.0, None
     if gap == 1:
@@ -157,7 +164,6 @@ def _score_experience(job: JobMatchInput, user: UserMatchInput) -> tuple[float, 
     if gap == 2:
         return 8.0, 20.0, f"Job targets {job.experience_level}-level experience."
     return 0.0, 20.0, f"Job requires {job.experience_level}-level experience."
-
 
 def _score_location(job: JobMatchInput, user: UserMatchInput) -> tuple[float, float, str | None]:
     # If we know nothing about the user's location prefs, we can't evaluate.
@@ -194,8 +200,8 @@ def _score_employment(job: JobMatchInput, user: UserMatchInput) -> tuple[float, 
         return 5.0, 10.0, None
     if job.employment_type in user.preferred_employment_types:
         return 10.0, 10.0, None
-    return 0.0, 10.0, f"Job is {job.employment_type}; you prefer {', '.join(user.preferred_employment_types)}."
-
+    prefs = ", ".join(user.preferred_employment_types)
+    return 0.0, 10.0, f"Job is {job.employment_type}; you prefer {prefs}."
 
 # ---------------------------------------------------------------------------
 # Entry point

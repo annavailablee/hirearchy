@@ -1,4 +1,3 @@
-import pytest
 
 
 def _register_and_login(client, email="alice@example.com") -> str:

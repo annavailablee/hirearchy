@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
@@ -103,7 +103,7 @@ def attention_queue(
         select(Deadline).where(Deadline.user_id == user.id)
     ).all()
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     in_window = [
         d for d in rows
         if within_attention_window(d.due_at, d.completed_at, days=days, now=now)
@@ -145,7 +145,7 @@ def update_deadline(
 
     if "completed" in updates:
         completed = updates.pop("completed")
-        d.completed_at = datetime.now(timezone.utc) if completed else None
+        d.completed_at = datetime.now(UTC) if completed else None
 
     for field, value in updates.items():
         setattr(d, field, value)

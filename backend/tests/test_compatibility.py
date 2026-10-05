@@ -2,7 +2,6 @@
 Unit tests for the pure compatibility algorithm.
 No DB, no HTTP — just the function.
 """
-import pytest
 
 from app.services.compatibility import (
     JobMatchInput,
@@ -31,8 +30,8 @@ def test_perfect_required_skills():
     job = JobMatchInput(required_skills=(ref("Python"), ref("SQL")))
     user = UserMatchInput(skills=(skill("Python"), skill("SQL")))
     result = compute_match(job, user)
-    assert category(result, "skills").earned == 50.0  # 40 required + 10 preferred (nothing preferred)
-
+    # 40 required + 10 preferred (nothing preferred)
+    assert category(result, "skills").earned == 50.0
 
 def test_zero_required_skills_matched():
     job = JobMatchInput(required_skills=(ref("Python"), ref("Docker")))

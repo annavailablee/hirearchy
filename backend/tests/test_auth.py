@@ -1,4 +1,3 @@
-import pytest
 
 VALID_USER = {
     "email": "alice@example.com",

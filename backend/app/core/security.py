@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import jwt
 from pwdlib import PasswordHash
@@ -19,7 +19,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 def create_access_token(subject: str) -> str:
     """Create a signed JWT. `subject` is the user id."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     payload = {
         "sub": subject,
         "iat": now,

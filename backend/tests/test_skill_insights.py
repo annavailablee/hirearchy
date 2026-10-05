@@ -2,7 +2,6 @@ import io
 
 from tests._pdf_helper import make_minimal_pdf
 
-
 _counter = [0]
 
 

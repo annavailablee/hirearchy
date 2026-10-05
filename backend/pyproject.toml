@@ -34,6 +34,11 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+# B008: FastAPI's Depends/Query/File are *meant* to be called in argument defaults.
+#        Ruff doesn't know about FastAPI's DI, so this rule is a false positive for us.
+# B904: We raise HTTPException inside except blocks deliberately; chaining isn't required
+#        for API error translation. Deferred to a future cleanup pass.
+ignore = ["B008", "B904"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta, timezone
-
+from datetime import UTC, datetime, timedelta
 
 _counter = [0]
 
@@ -24,7 +23,7 @@ def _create(client, token, **overrides):
     payload = {
         "title": "Test deadline",
         "kind": "custom",
-        "due_at": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat(),
+        "due_at": (datetime.now(UTC) + timedelta(days=3)).isoformat(),
     }
     payload.update(overrides)
     return client.post("/deadlines", headers=_auth(token), json=payload)
@@ -55,7 +54,7 @@ def test_create_invalid_kind_returns_422(client):
 
 def test_list_excludes_completed_by_default(client):
     token = _token(client)
-    a = _create(client, token, title="Keep me").json()["id"]
+    _create(client, token, title="Keep me")
     b = _create(client, token, title="Complete me").json()["id"]
 
     client.patch(f"/deadlines/{b}", headers=_auth(token), json={"completed": True})
@@ -79,9 +78,9 @@ def test_list_includes_completed_when_asked(client):
 def test_attention_queue_excludes_far_future(client):
     token = _token(client)
     _create(client, token, title="Far away",
-            due_at=(datetime.now(timezone.utc) + timedelta(days=60)).isoformat())
+            due_at=(datetime.now(UTC) + timedelta(days=60)).isoformat())
     _create(client, token, title="Due soon",
-            due_at=(datetime.now(timezone.utc) + timedelta(days=2)).isoformat())
+            due_at=(datetime.now(UTC) + timedelta(days=2)).isoformat())
 
     queue = client.get("/deadlines/attention", headers=_auth(token)).json()
     titles = {d["title"] for d in queue}
@@ -92,9 +91,9 @@ def test_attention_queue_excludes_far_future(client):
 def test_attention_queue_sorts_overdue_first(client):
     token = _token(client)
     _create(client, token, title="Due in 3 days",
-            due_at=(datetime.now(timezone.utc) + timedelta(days=3)).isoformat())
+            due_at=(datetime.now(UTC) + timedelta(days=3)).isoformat())
     _create(client, token, title="Overdue",
-            due_at=(datetime.now(timezone.utc) - timedelta(hours=2)).isoformat())
+            due_at=(datetime.now(UTC) - timedelta(hours=2)).isoformat())
 
     queue = client.get("/deadlines/attention", headers=_auth(token)).json()
     assert queue[0]["priority"] == "OVERDUE"

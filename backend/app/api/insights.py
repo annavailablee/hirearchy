@@ -11,8 +11,8 @@ from app.models.user import User
 from app.schemas.insights import (
     ApplicationInsightsOut,
     ResumeRef,
-    SkillInsightsOut,
     SkillInsightItem,
+    SkillInsightsOut,
 )
 from app.services.skill_insights import compute_skill_insights
 

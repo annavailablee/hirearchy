@@ -4,7 +4,7 @@ Deadline priority and attention-queue logic.
 All pure functions on datetimes and simple objects — no DB, no HTTP.
 The endpoint assembles inputs and calls these.
 """
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 _PRIORITY_ORDER = {
     "OVERDUE": 0,
@@ -22,7 +22,7 @@ def compute_priority(
     if completed_at is not None:
         return "COMPLETED"
 
-    now = now or datetime.now(timezone.utc)
+    now = now or datetime.now(UTC)
     delta = due_at - now
 
     if delta.total_seconds() < 0:
@@ -53,5 +53,5 @@ def within_attention_window(
     """
     if completed_at is not None:
         return False
-    now = now or datetime.now(timezone.utc)
+    now = now or datetime.now(UTC)
     return due_at <= now + timedelta(days=days)

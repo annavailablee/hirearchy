@@ -19,7 +19,6 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.skill import Skill
-    from app.models.user import User
 
 
 class Job(Base):

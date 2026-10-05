@@ -2,21 +2,19 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import or_, select
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
 from app.db.session import get_db
 from app.models.job import Job, JobSkill
-from app.models.skill import Skill, ResumeSkill
-from app.models.user import User
-from app.schemas.job import JobCreate, JobDetailOut, JobOut, JobSkillOut
-from app.services import job_service
-from app.services.job_service import DuplicateJobError
-from app.models.profile import Profile
 from app.models.resume import Resume
+from app.models.skill import ResumeSkill, Skill
+from app.models.user import User
+from app.schemas.application import ApplicationDetailOut
+from app.schemas.job import JobCreate, JobDetailOut, JobOut, JobSkillOut
 from app.schemas.match import MatchResultOut
 from app.schemas.resume_match import BestResumeOut, ResumeMatchSummary
-from app.schemas.application import ApplicationDetailOut
+from app.services import job_service
 from app.services.application_service import get_or_create_saved
 from app.services.compatibility import (
     JobMatchInput,
@@ -25,6 +23,7 @@ from app.services.compatibility import (
     UserSkill,
     compute_match,
 )
+from app.services.job_service import DuplicateJobError
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 

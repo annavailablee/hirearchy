@@ -1,11 +1,11 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class DeadlineKind(str, Enum):
+class DeadlineKind(StrEnum):
     APPLICATION = "application"
     ASSESSMENT = "assessment"
     INTERVIEW = "interview"

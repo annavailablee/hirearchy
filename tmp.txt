@@ -1,0 +1,5 @@
+28:_EXPERIENCE_ORDER = {
+150:        job.experience_level not in _EXPERIENCE_ORDER
+151:        or user.experience_level not in _EXPERIENCE_ORDER
+156:        _EXPERIENCE_ORDER[job.experience_level]
+157:        - _EXPERIENCE_ORDER[user.experience_level]

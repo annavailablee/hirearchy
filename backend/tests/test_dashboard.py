@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta, timezone
-
+from datetime import UTC, datetime, timedelta
 
 _counter = [0]
 
@@ -38,7 +37,7 @@ def _deadline(client, token, **overrides):
     payload = {
         "title": "Test",
         "kind": "custom",
-        "due_at": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat(),
+        "due_at": (datetime.now(UTC) + timedelta(days=3)).isoformat(),
     }
     payload.update(overrides)
     return client.post("/deadlines", headers=_auth(token), json=payload).json()
@@ -84,10 +83,10 @@ def test_dashboard_reports_overdue_and_urgent(client):
     token = _token(client)
     # overdue
     _deadline(client, token, title="Overdue",
-              due_at=(datetime.now(timezone.utc) - timedelta(hours=3)).isoformat())
+              due_at=(datetime.now(UTC) - timedelta(hours=3)).isoformat())
     # urgent
     _deadline(client, token, title="Due soon",
-              due_at=(datetime.now(timezone.utc) + timedelta(hours=10)).isoformat())
+              due_at=(datetime.now(UTC) + timedelta(hours=10)).isoformat())
 
     body = client.get("/dashboard", headers=_auth(token)).json()
     assert body["attention"]["overdue_count"] == 1
@@ -107,7 +106,7 @@ def test_dashboard_upcoming_joins_job_info(client):
         title="Online Assessment",
         kind="assessment",
         application_id=app["id"],
-        due_at=(datetime.now(timezone.utc) + timedelta(days=2)).isoformat(),
+        due_at=(datetime.now(UTC) + timedelta(days=2)).isoformat(),
     )
 
     body = client.get("/dashboard", headers=_auth(token)).json()
@@ -121,9 +120,9 @@ def test_dashboard_upcoming_joins_job_info(client):
 def test_dashboard_upcoming_excludes_past(client):
     token = _token(client)
     _deadline(client, token, title="Past",
-              due_at=(datetime.now(timezone.utc) - timedelta(hours=1)).isoformat())
+              due_at=(datetime.now(UTC) - timedelta(hours=1)).isoformat())
     _deadline(client, token, title="Future",
-              due_at=(datetime.now(timezone.utc) + timedelta(days=2)).isoformat())
+              due_at=(datetime.now(UTC) + timedelta(days=2)).isoformat())
 
     body = client.get("/dashboard", headers=_auth(token)).json()
     titles = {u["title"] for u in body["upcoming"]}
@@ -134,7 +133,7 @@ def test_dashboard_upcoming_excludes_past(client):
 def test_dashboard_upcoming_excludes_completed(client):
     token = _token(client)
     d = _deadline(client, token, title="Done",
-                  due_at=(datetime.now(timezone.utc) + timedelta(days=2)).isoformat())
+                  due_at=(datetime.now(UTC) + timedelta(days=2)).isoformat())
     client.patch(f"/deadlines/{d['id']}", headers=_auth(token), json={"completed": True})
 
     body = client.get("/dashboard", headers=_auth(token)).json()

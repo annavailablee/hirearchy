@@ -18,8 +18,8 @@ def test_alias_matches_canonical():
 
 
 def test_aws_aliases():
-    assert names(extract_skills("Deployed on AWS. Also used Amazon Web Services heavily.")) == {"AWS"}
-
+    text = "Deployed on AWS. Also used Amazon Web Services heavily."
+    assert names(extract_skills(text)) == {"AWS"}
 
 def test_word_boundary_no_substring_false_positive():
     assert "Java" not in names(extract_skills("I write JavaScript and React."))

@@ -7,7 +7,6 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.job import Job, JobSkill
-from app.models.skill import Skill
 from app.schemas.job import JobCreate
 from app.services.skill_extraction import extract_skills
 from app.services.skill_repository import upsert_taxonomy_skills

@@ -5,7 +5,7 @@ Assembles data from multiple existing services into one response.
 Does NOT contain business logic — that lives in the underlying services.
 If a query here gets complex, it belongs in the underlying service, not here.
 """
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -63,7 +63,9 @@ def _attention_items(db: Session, user_id, now: datetime):
         d for d in rows
         if within_attention_window(d.due_at, d.completed_at, days=7, now=now)
     ]
-    items.sort(key=lambda d: (priority_rank(compute_priority(d.due_at, d.completed_at, now)), d.due_at))
+    def sort_key(d):
+        return (priority_rank(compute_priority(d.due_at, d.completed_at, now)), d.due_at)
+    items.sort(key=sort_key)
     return items
 
 
@@ -92,7 +94,7 @@ def build_dashboard(db: Session, user_id) -> dict:
     Return a plain dict; the endpoint converts to Pydantic.
     This keeps the service free of schema imports.
     """
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     # ---- Applications ----
     by_status = _application_counts(db, user_id)
@@ -101,8 +103,14 @@ def build_dashboard(db: Session, user_id) -> dict:
 
     # ---- Attention ----
     attention_items = _attention_items(db, user_id, now)
-    overdue = [d for d in attention_items if compute_priority(d.due_at, d.completed_at, now) == "OVERDUE"]
-    urgent = [d for d in attention_items if compute_priority(d.due_at, d.completed_at, now) == "URGENT"]
+    overdue = [
+        d for d in attention_items
+        if compute_priority(d.due_at, d.completed_at, now) == "OVERDUE"
+    ]
+    urgent = [
+        d for d in attention_items
+        if compute_priority(d.due_at, d.completed_at, now) == "URGENT"
+    ]
 
     # ---- Upcoming ----
     upcoming_rows = _upcoming_items(db, user_id, now, UPCOMING_LIMIT)

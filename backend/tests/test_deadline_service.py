@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from app.services.deadline_service import (
     compute_priority,
@@ -6,7 +6,7 @@ from app.services.deadline_service import (
     within_attention_window,
 )
 
-NOW = datetime(2026, 6, 1, 12, 0, tzinfo=timezone.utc)
+NOW = datetime(2026, 6, 1, 12, 0, tzinfo=UTC)
 
 
 def test_completed():
@@ -36,7 +36,8 @@ def test_later_beyond_week():
 
 
 def test_priority_rank_orders_correctly():
-    ranks = [priority_rank(p) for p in ["OVERDUE", "URGENT", "HIGH", "NORMAL", "LATER", "COMPLETED"]]
+    order = ["OVERDUE", "URGENT", "HIGH", "NORMAL", "LATER", "COMPLETED"]
+    ranks = [priority_rank(p) for p in order]
     assert ranks == sorted(ranks)
 
 

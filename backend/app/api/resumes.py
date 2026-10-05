@@ -8,11 +8,11 @@ from app.api.deps import get_current_user
 from app.config import settings
 from app.db.session import get_db
 from app.models.resume import Resume
+from app.models.skill import ResumeSkill, Skill
 from app.models.user import User
+from app.schemas.resume import ResumeDetailOut, ResumeOut, ResumeSkillOut, ResumeUpdate
 from app.services import storage
 from app.services.pdf_extraction import PdfExtractionError, extract_text_from_pdf, looks_like_pdf
-from app.models.skill import ResumeSkill, Skill
-from app.schemas.resume import ResumeDetailOut, ResumeOut, ResumeSkillOut, ResumeUpdate
 from app.services.skill_extraction import extract_skills
 from app.services.skill_repository import persist_resume_skills
 

@@ -72,17 +72,26 @@ def test_cannot_read_other_users_resume_skills(client):
 def test_skills_are_isolated_per_resume(client):
     """Two resumes uploaded by the same user should have independent skill sets."""
     token = _token(client)
-    a = _upload(client, token, "Python and Docker", name="A").json()["id"]
-    b = _upload(client, token, "Java and Spring Boot", name="B").json()["id"]
+    resume_a = _upload(client, token, "Python and Docker", name="A").json()["id"]
+    resume_b = _upload(client, token, "Java and Spring Boot", name="B").json()["id"]
 
-    a_skills = {s["canonical"] for s in client.get(f"/resumes/{a}/skills", headers=_auth(token)).json()}
-    b_skills = {s["canonical"] for s in client.get(f"/resumes/{b}/skills", headers=_auth(token)).json()}
+    a_skills = {
+        s["canonical"]
+        for s in client.get(
+            f"/resumes/{resume_a}/skills", headers=_auth(token)
+        ).json()
+    }
+    b_skills = {
+        s["canonical"]
+        for s in client.get(
+            f"/resumes/{resume_b}/skills", headers=_auth(token)
+        ).json()
+    }
 
     assert "Python" in a_skills
     assert "Python" not in b_skills
     assert "Java" in b_skills
     assert "Java" not in a_skills
-
 
 def test_taxonomy_skills_are_seeded_once(client, db):
     """Two uploads should not duplicate rows in the `skills` table."""

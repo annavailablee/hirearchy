@@ -1,25 +1,25 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class RemotePreference(str, Enum):
+class RemotePreference(StrEnum):
     REMOTE = "remote"
     HYBRID = "hybrid"
     ONSITE = "onsite"
     ANY = "any"
 
 
-class EmploymentType(str, Enum):
+class EmploymentType(StrEnum):
     INTERNSHIP = "internship"
     FULL_TIME = "full-time"
     PART_TIME = "part-time"
     CONTRACT = "contract"
 
 
-class ExperienceLevel(str, Enum):
+class ExperienceLevel(StrEnum):
     STUDENT = "student"
     FRESHER = "fresher"
     JUNIOR = "junior"

@@ -13,19 +13,19 @@ def make_minimal_pdf(text: str = "Hello world") -> bytes:
         return len(objects)
 
     # Object 1: Catalog
-    catalog_num = add(b"<< /Type /Catalog /Pages 2 0 R >>")
+    add(b"<< /Type /Catalog /Pages 2 0 R >>")
     # Object 2: Pages
-    pages_num = add(b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>")
+    add(b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>")
 
     # Object 3: Page. Content stream is object 4.
-    page_num = add(
+    add(
         b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
         b"/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>"
     )
 
     # Object 4: Content stream
     stream_body = f"BT /F1 24 Tf 72 700 Td ({text}) Tj ET".encode("latin-1")
-    content_num = add(
+    add(
         b"<< /Length " + str(len(stream_body)).encode() + b" >>\nstream\n"
         + stream_body + b"\nendstream"
     )

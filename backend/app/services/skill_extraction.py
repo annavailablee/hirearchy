@@ -15,7 +15,7 @@ No LLM. Pure rules. Fully testable.
 import json
 import re
 from dataclasses import dataclass
-from functools import lru_cache
+from functools import cache, lru_cache
 from pathlib import Path
 
 _TAXONOMY_PATH = Path(__file__).resolve().parent.parent / "data" / "skill_taxonomy.json"
@@ -36,7 +36,7 @@ def _load_taxonomy() -> tuple[dict, ...]:
     return tuple(data["skills"])
 
 
-@lru_cache(maxsize=None)
+@cache
 def _build_pattern(term: str) -> re.Pattern:
     """
     Word-boundary-aware regex that also works for terms with symbols like C++, C#.
