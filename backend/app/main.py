@@ -1,6 +1,15 @@
 from fastapi import FastAPI
 
-from app.api import applications, auth, deadlines, health, jobs, profile, resumes
+from app.api import (
+    applications,
+    auth,
+    deadlines,
+    health,
+    insights,
+    jobs,
+    profile,
+    resumes,
+)
 from app.config import settings
 
 app = FastAPI(
@@ -17,6 +26,7 @@ app.include_router(resumes.router)
 app.include_router(jobs.router)
 app.include_router(applications.router)
 app.include_router(deadlines.router)
+app.include_router(insights.router)
 
 
 @app.get("/")
