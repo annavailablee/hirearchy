@@ -15,6 +15,7 @@ from app.services.job_service import DuplicateJobError
 from app.models.profile import Profile
 from app.models.resume import Resume
 from app.schemas.match import MatchResultOut
+from app.schemas.resume_match import BestResumeOut, ResumeMatchSummary
 from app.schemas.application import ApplicationDetailOut
 from app.services.application_service import get_or_create_saved
 from app.services.compatibility import (
@@ -26,6 +27,55 @@ from app.services.compatibility import (
 )
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
+
+def _build_job_input(db: Session, job: Job) -> JobMatchInput:
+    rows = db.execute(
+        select(Skill.canonical, Skill.category, JobSkill.kind)
+        .join(Skill, Skill.id == JobSkill.skill_id)
+        .where(JobSkill.job_id == job.id)
+    ).all()
+    required = tuple(
+        SkillRef(canonical=c, category=cat)
+        for c, cat, kind in rows if kind == "required"
+    )
+    preferred = tuple(
+        SkillRef(canonical=c, category=cat)
+        for c, cat, kind in rows if kind == "preferred"
+    )
+    return JobMatchInput(
+        required_skills=required,
+        preferred_skills=preferred,
+        experience_level=job.experience_level,
+        education_requirements=job.education_requirements,
+        remote_type=job.remote_type,
+        location=job.location,
+        employment_type=job.employment_type,
+    )
+
+
+def _build_user_input(db: Session, user: User, resume: Resume) -> UserMatchInput:
+    rows = db.execute(
+        select(Skill.canonical, Skill.category, ResumeSkill.context)
+        .join(Skill, Skill.id == ResumeSkill.skill_id)
+        .where(ResumeSkill.resume_id == resume.id)
+    ).all()
+    user_skills = tuple(
+        UserSkill(canonical=c, category=cat, context=ctx)
+        for c, cat, ctx in rows
+    )
+    profile = user.profile
+    return UserMatchInput(
+        skills=user_skills,
+        experience_level=profile.experience_level if profile else None,
+        preferred_locations=tuple(profile.preferred_locations or []) if profile else (),
+        current_location=profile.current_location if profile else None,
+        remote_preference=profile.remote_preference if profile else None,
+        preferred_employment_types=(
+            tuple(profile.preferred_employment_types or []) if profile else ()
+        ),
+        degree=profile.degree if profile else None,
+        education=profile.education if profile else None,
+    )
 
 
 @router.post("", response_model=JobDetailOut, status_code=status.HTTP_201_CREATED)
@@ -152,17 +202,10 @@ def match_job(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> MatchResultOut:
-    """
-    Compute compatibility between a job and a resume.
-
-    If `resume_id` is provided and belongs to the user, that resume is used.
-    Otherwise, the user's primary resume is used.
-    """
     job = db.get(Job, job_id)
     if job is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+        raise HTTPException(status_code=404, detail="Job not found")
 
-    # Resolve the resume: explicit → primary → error.
     if resume_id is not None:
         resume = db.scalar(
             select(Resume).where(Resume.id == resume_id, Resume.user_id == user.id)
@@ -171,7 +214,9 @@ def match_job(
             raise HTTPException(status_code=404, detail="Resume not found")
     else:
         resume = db.scalar(
-            select(Resume).where(Resume.user_id == user.id, Resume.is_primary.is_(True))
+            select(Resume).where(
+                Resume.user_id == user.id, Resume.is_primary.is_(True)
+            )
         )
         if resume is None:
             raise HTTPException(
@@ -179,55 +224,7 @@ def match_job(
                 detail="No primary resume. Upload a resume or specify resume_id.",
             )
 
-    # Gather user's skills with evidence.
-    user_rows = db.execute(
-        select(Skill.canonical, Skill.category, ResumeSkill.context)
-        .join(Skill, Skill.id == ResumeSkill.skill_id)
-        .where(ResumeSkill.resume_id == resume.id)
-    ).all()
-    user_skills = tuple(
-        UserSkill(canonical=c, category=cat, context=ctx)
-        for c, cat, ctx in user_rows
-    )
-
-    # Gather job's skills, split by kind.
-    job_rows = db.execute(
-        select(Skill.canonical, Skill.category, JobSkill.kind)
-        .join(Skill, Skill.id == JobSkill.skill_id)
-        .where(JobSkill.job_id == job.id)
-    ).all()
-    required = tuple(
-        SkillRef(canonical=c, category=cat)
-        for c, cat, kind in job_rows if kind == "required"
-    )
-    preferred = tuple(
-        SkillRef(canonical=c, category=cat)
-        for c, cat, kind in job_rows if kind == "preferred"
-    )
-
-    profile = user.profile
-
-    job_input = JobMatchInput(
-        required_skills=required,
-        preferred_skills=preferred,
-        experience_level=job.experience_level,
-        education_requirements=job.education_requirements,
-        remote_type=job.remote_type,
-        location=job.location,
-        employment_type=job.employment_type,
-    )
-    user_input = UserMatchInput(
-        skills=user_skills,
-        experience_level=profile.experience_level if profile else None,
-        preferred_locations=tuple(profile.preferred_locations or []) if profile else (),
-        current_location=profile.current_location if profile else None,
-        remote_preference=profile.remote_preference if profile else None,
-        preferred_employment_types=tuple(profile.preferred_employment_types or []) if profile else (),
-        degree=profile.degree if profile else None,
-        education=profile.education if profile else None,
-    )
-
-    return compute_match(job_input, user_input)
+    return compute_match(_build_job_input(db, job), _build_user_input(db, user, resume))
 
 @router.post("/{job_id}/save", response_model=ApplicationDetailOut)
 def save_job(
@@ -243,3 +240,79 @@ def save_job(
     db.commit()
     db.refresh(app)
     return app
+
+@router.get("/{job_id}/best-resume", response_model=BestResumeOut)
+def best_resume(
+    job_id: uuid.UUID,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> BestResumeOut:
+    """
+    Rank every resume the user owns against this job.
+    Resumes with failed extraction are excluded (their skill list is empty
+    and would give a misleading low score).
+    """
+    job = db.get(Job, job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    resumes = list(
+        db.scalars(
+            select(Resume)
+            .where(Resume.user_id == user.id)
+            .order_by(Resume.uploaded_at.desc())
+        )
+    )
+
+    if not resumes:
+        raise HTTPException(
+            status_code=400,
+            detail="No resumes uploaded. Upload a resume first.",
+        )
+
+    job_input = _build_job_input(db, job)
+
+    summaries: list[ResumeMatchSummary] = []
+    for resume in resumes:
+        if resume.extraction_status != "success":
+            summaries.append(
+                ResumeMatchSummary(
+                    id=resume.id,
+                    name=resume.name,
+                    is_primary=resume.is_primary,
+                    score=0,
+                    matched_skills=[],
+                    missing_skills=[],
+                    is_recommended=False,
+                    note="Resume text could not be extracted.",
+                )
+            )
+            continue
+
+        user_input = _build_user_input(db, user, resume)
+        result = compute_match(job_input, user_input)
+
+        summaries.append(
+            ResumeMatchSummary(
+                id=resume.id,
+                name=resume.name,
+                is_primary=resume.is_primary,
+                score=result.score,
+                matched_skills=sorted(s.canonical for s in result.matched_required_skills),
+                missing_skills=result.missing_required_skills,
+                is_recommended=False,
+                note=None,
+            )
+        )
+
+    # Sort: score desc, then primary first, then retain upload order.
+    # `sorted` is stable, so resumes that tie retain their upload-order position.
+    summaries.sort(key=lambda s: (-s.score, not s.is_primary))
+
+    # Mark the top-scoring eligible resume as recommended.
+    for s in summaries:
+        if s.note is None:  # eligible (extraction succeeded)
+            s.is_recommended = True
+            break
+
+    return BestResumeOut(job_id=job.id, resumes=summaries)
