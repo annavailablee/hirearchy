@@ -15,6 +15,8 @@ from app.services.job_service import DuplicateJobError
 from app.models.profile import Profile
 from app.models.resume import Resume
 from app.schemas.match import MatchResultOut
+from app.schemas.application import ApplicationDetailOut
+from app.services.application_service import get_or_create_saved
 from app.services.compatibility import (
     JobMatchInput,
     SkillRef,
@@ -226,3 +228,18 @@ def match_job(
     )
 
     return compute_match(job_input, user_input)
+
+@router.post("/{job_id}/save", response_model=ApplicationDetailOut)
+def save_job(
+    job_id: uuid.UUID,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Idempotent: returns the existing application if already saved."""
+    job = db.get(Job, job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="Job not found")
+    app = get_or_create_saved(db, user.id, job_id)
+    db.commit()
+    db.refresh(app)
+    return app

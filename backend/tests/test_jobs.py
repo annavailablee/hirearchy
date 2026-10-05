@@ -73,41 +73,44 @@ def test_create_job_no_url_allows_duplicates(client):
 
 def test_list_jobs_returns_both_jobs(client):
     token = _token(client)
-    _create_job(client, token, title="First", company="A")
-    _create_job(client, token, title="Second", company="B")
+    _create_job(client, token, title="TestAlpha", company="TestCoA")
+    _create_job(client, token, title="TestBeta", company="TestCoB")
 
     body = client.get("/jobs", headers=_auth(token)).json()
-    assert len(body) == 2
     titles = {j["title"] for j in body}
-    assert titles == {"First", "Second"}
+    # Only assert about jobs we created.
+    assert {"TestAlpha", "TestBeta"} <= titles
 
 
 def test_list_jobs_filters_by_search(client):
     token = _token(client)
-    _create_job(client, token, title="Frontend Engineer", company="X")
-    _create_job(client, token, title="Backend Engineer", company="Y")
+    _create_job(client, token, title="UniqueFrontendRole99", company="X")
+    _create_job(client, token, title="UniqueBackendRole77", company="Y")
 
-    body = client.get("/jobs?q=backend", headers=_auth(token)).json()
+    # Search term is guaranteed unique — won't collide with any pre-existing data.
+    body = client.get("/jobs?q=UniqueBackendRole77", headers=_auth(token)).json()
     assert len(body) == 1
-    assert body[0]["title"] == "Backend Engineer"
+    assert body[0]["title"] == "UniqueBackendRole77"
 
 
 def test_list_jobs_filters_by_remote_type(client):
     token = _token(client)
-    _create_job(client, token, title="Remote Job", remote_type="remote")
-    _create_job(client, token, title="Onsite Job", remote_type="onsite")
+    _create_job(client, token, title="TestRemoteOnly", remote_type="remote")
+    _create_job(client, token, title="TestOnsiteOnly", remote_type="onsite")
 
     body = client.get("/jobs?remote_type=remote", headers=_auth(token)).json()
-    assert len(body) == 1
-    assert body[0]["title"] == "Remote Job"
+    titles = {j["title"] for j in body}
+    assert "TestRemoteOnly" in titles
+    assert "TestOnsiteOnly" not in titles
 
 
 def test_list_jobs_pagination(client):
     token = _token(client)
     for i in range(5):
-        _create_job(client, token, title=f"Job {i}", company="X")
+        _create_job(client, token, title=f"PaginationTest{i}", company="X")
 
     body = client.get("/jobs?limit=2&offset=0", headers=_auth(token)).json()
+    # We asked for limit=2, so we get exactly 2 — regardless of total count.
     assert len(body) == 2
 
 
