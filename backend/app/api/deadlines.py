@@ -34,12 +34,12 @@ def _get_owned(deadline_id: uuid.UUID, user: User, db: Session) -> Deadline:
     return d
 
 
-@router.post("", response_model=DeadlineOut, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=DeadlineWithPriority, status_code=status.HTTP_201_CREATED)
 def create_deadline(
     data: DeadlineCreate,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
-) -> Deadline:
+) -> DeadlineWithPriority:
     # If an application is given, it must belong to the user.
     if data.application_id is not None:
         app = db.scalar(
@@ -62,8 +62,10 @@ def create_deadline(
     db.add(d)
     db.commit()
     db.refresh(d)
-    return d
-
+    return DeadlineWithPriority(
+        **DeadlineOut.model_validate(d).model_dump(),
+        priority=compute_priority(d.due_at, d.completed_at),
+    )
 
 @router.get("", response_model=list[DeadlineWithPriority])
 def list_deadlines(
