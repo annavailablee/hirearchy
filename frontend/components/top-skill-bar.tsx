@@ -21,7 +21,7 @@ export function TopSkillBar({ skill, index }: { skill: TopSkill; index: number }
             </span>
           )}
         </div>
-        <span className="text-[11px] text-mauve tabular-nums shrink-0 ml-2">
+        <span className="text-[14px] text-mauve tabular-nums shrink-0 ml-2">
           {skill.frequency_pct.toFixed(0)}%
         </span>
       </div>

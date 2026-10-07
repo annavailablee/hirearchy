@@ -89,7 +89,7 @@ export function UploadResumeForm({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className="block md:col-span-2">
-                  <span className="block text-[11px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
+                  <span className="block text-[14px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
                     Resume name
                   </span>
                   <input
@@ -104,7 +104,7 @@ export function UploadResumeForm({
                 </label>
 
                 <label className="block md:col-span-2">
-                  <span className="block text-[11px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
+                  <span className="block text-[14px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
                     PDF file (max 5 MB)
                   </span>
                   <div
@@ -115,7 +115,7 @@ export function UploadResumeForm({
                       <div className="flex items-center justify-center gap-2 text-ink">
                         <FileText size={15} strokeWidth={1.9} />
                         <span className="text-sm font-medium">{file.name}</span>
-                        <span className="text-[11px] text-mauve">
+                        <span className="text-[14px] text-mauve">
                           ({(file.size / 1024).toFixed(0)} KB)
                         </span>
                       </div>
@@ -139,7 +139,7 @@ export function UploadResumeForm({
               </div>
 
               {error && (
-                <div className="mt-4 text-[13px] text-danger bg-danger/10 border border-danger/20 rounded-md px-3 py-2">
+                <div className="mt-4 text-[15px] text-danger bg-danger/10 border border-danger/20 rounded-md px-3 py-2">
                   {error}
                 </div>
               )}

@@ -48,10 +48,10 @@ export function ApplicationCard({
     >
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="min-w-0">
-          <p className="text-[13px] font-medium text-ink truncate leading-tight">
+          <p className="text-[15px] font-medium text-ink truncate leading-tight">
             {app.job_title}
           </p>
-          <p className="text-[11px] text-mauve truncate mt-0.5">
+          <p className="text-[14px] text-mauve truncate mt-0.5">
             {app.company}
           </p>
         </div>
@@ -86,7 +86,7 @@ export function ApplicationCard({
               className="absolute right-2 top-10 z-20 w-40 rounded-lg bg-white ring-1 ring-border shadow-lift overflow-hidden"
             >
               {nexts.length === 0 && (
-                <p className="px-3 py-2.5 text-[11px] text-mauve">
+                <p className="px-3 py-2.5 text-[14px] text-mauve">
                   Terminal state
                 </p>
               )}
@@ -97,7 +97,7 @@ export function ApplicationCard({
                     onTransition(app.id, s);
                     setMenuOpen(false);
                   }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-[12px] text-ink hover:bg-blush-50 transition-colors"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-[14px] text-ink hover:bg-blush-50 transition-colors"
                 >
                   <ArrowRight size={11} strokeWidth={2.2} className="text-mauve" />
                   Move to {s.toLowerCase()}
@@ -108,7 +108,7 @@ export function ApplicationCard({
                   onDelete(app.id);
                   setMenuOpen(false);
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-[12px] text-danger hover:bg-danger/5 transition-colors border-t border-border/40"
+                className="flex w-full items-center gap-2 px-3 py-2 text-[14px] text-danger hover:bg-danger/5 transition-colors border-t border-border/40"
               >
                 <Trash2 size={11} strokeWidth={2.2} />
                 Delete

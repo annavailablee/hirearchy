@@ -42,7 +42,7 @@ export function AttentionCard({ item }: { item: DeadlinePriorityOut }) {
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium text-ink truncate">{item.title}</p>
-        <p className="text-[11px] text-mauve mt-0.5">
+        <p className="text-[14px] text-mauve mt-0.5">
           Due {relativeTime(item.due_at)}
         </p>
       </div>

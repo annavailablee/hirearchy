@@ -161,7 +161,7 @@ function Field({
 }) {
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="block text-[11px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
+      <span className="block text-[14px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
         {label}
       </span>
       {children}

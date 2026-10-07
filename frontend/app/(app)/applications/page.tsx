@@ -113,7 +113,7 @@ const activeCount = useMemo(
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-8"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <Briefcase size={14} strokeWidth={1.8} />
             Applications
           </div>
@@ -162,10 +162,10 @@ const activeCount = useMemo(
                 className="flex flex-col"
               >
                 <div className="flex items-baseline justify-between mb-3 px-1">
-                  <h2 className="text-[11px] uppercase tracking-[0.14em] text-mauve font-medium">
+                  <h2 className="text-[14px] uppercase tracking-[0.14em] text-mauve font-medium">
                     {col.label}
                   </h2>
-                  <span className="text-[11px] text-mauve/60 tabular-nums">
+                  <span className="text-[14px] text-mauve/60 tabular-nums">
                     {grouped[col.key].length}
                   </span>
                 </div>
@@ -194,13 +194,13 @@ const activeCount = useMemo(
           >
             <details className="group">
               <summary className="cursor-pointer list-none flex items-center gap-2 select-none">
-                <span className="text-[11px] uppercase tracking-[0.14em] text-mauve font-medium">
+                <span className="text-[14px] uppercase tracking-[0.14em] text-mauve font-medium">
                   Closed
                 </span>
-                <span className="text-[11px] text-mauve/60 tabular-nums">
+                <span className="text-[14px] text-mauve/60 tabular-nums">
                   {closedApps.length}
                 </span>
-                <span className="text-[11px] text-mauve/50 ml-1 group-open:hidden">
+                <span className="text-[14px] text-mauve/50 ml-1 group-open:hidden">
                   (click to expand)
                 </span>
               </summary>

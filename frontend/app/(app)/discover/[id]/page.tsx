@@ -120,7 +120,7 @@ export default function JobDetailPage() {
       <div className="max-w-5xl mx-auto">
         <Link
           href="/discover"
-          className="inline-flex items-center gap-1.5 text-[13px] text-mauve hover:text-plum transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-[15px] text-mauve hover:text-plum transition-colors mb-8"
         >
           <ArrowLeft size={14} strokeWidth={1.9} /> Back to Discover
         </Link>
@@ -135,7 +135,7 @@ export default function JobDetailPage() {
           <h1 className="font-display text-5xl leading-tight tracking-tight text-ink mb-3">
             {job.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-mauve">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[15px] text-mauve">
             <span className="inline-flex items-center gap-1.5">
               <Building2 size={14} strokeWidth={1.8} />
               {job.company}
@@ -209,7 +209,7 @@ export default function JobDetailPage() {
             </div>
           </motion.section>
         ) : (
-          <div className="rounded-xl border border-dashed border-border px-5 py-6 text-[13px] text-mauve mb-8">
+          <div className="rounded-xl border border-dashed border-border px-5 py-6 text-[15px] text-mauve mb-8">
             Upload a resume to see your compatibility score for this job.
           </div>
         )}
@@ -222,19 +222,19 @@ export default function JobDetailPage() {
             transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-2xl bg-blush-50 ring-1 ring-border/40 px-6 py-5 mb-8"
           >
-            <p className="text-[11px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
+            <p className="text-[14px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
               Recommended resume
             </p>
             <div className="flex flex-wrap items-baseline gap-3">
               <p className="font-display text-xl text-ink">
                 {recommendedResume.name}
               </p>
-              <span className="text-[12px] text-plum font-medium tabular-nums">
+              <span className="text-[14px] text-plum font-medium tabular-nums">
                 {recommendedResume.score}% match
               </span>
             </div>
             {recommendedResume.matched_skills.length > 0 && (
-              <p className="text-[12px] text-mauve mt-2">
+              <p className="text-[14px] text-mauve mt-2">
                 Matches on {recommendedResume.matched_skills.slice(0, 6).join(", ")}
                 {recommendedResume.matched_skills.length > 6 && "…"}
               </p>
@@ -309,7 +309,7 @@ export default function JobDetailPage() {
             <h2 className="font-display text-2xl text-ink mb-4">
               About the role
             </h2>
-            <p className="text-[14px] text-ink/85 leading-relaxed whitespace-pre-wrap">
+            <p className="text-[15px] text-ink/85 leading-relaxed whitespace-pre-wrap">
               {job.description}
             </p>
           </motion.section>
@@ -336,7 +336,7 @@ function SkillGroup({
 }) {
   return (
     <div className="mb-6 last:mb-0">
-      <p className="text-[11px] uppercase tracking-[0.14em] text-mauve mb-2.5 font-medium">
+      <p className="text-[14px] uppercase tracking-[0.14em] text-mauve mb-2.5 font-medium">
         {label} · {skills.length}
       </p>
       <div className="flex flex-wrap gap-2">

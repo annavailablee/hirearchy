@@ -55,7 +55,7 @@ export default function InsightsPage() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <BarChart3 size={14} strokeWidth={1.8} />
             Insights
           </div>
@@ -126,14 +126,14 @@ export default function InsightsPage() {
               </div>
               {apps.total > 0 && (
                 <div className="mt-6 pt-6 border-t border-border/40">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-mauve mb-3 font-medium">
+                  <p className="text-[14px] uppercase tracking-[0.14em] text-mauve mb-3 font-medium">
                     By status
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(apps.by_status).map(([status, count]) => (
                       <span
                         key={status}
-                        className="inline-flex items-baseline gap-1.5 rounded-full bg-blush-50 ring-1 ring-border/60 px-3 py-1 text-[11px]"
+                        className="inline-flex items-baseline gap-1.5 rounded-full bg-blush-50 ring-1 ring-border/60 px-3 py-1 text-[14px]"
                       >
                         <span className="text-mauve uppercase tracking-[0.1em]">
                           {status}
@@ -162,7 +162,7 @@ export default function InsightsPage() {
                   Skill analysis
                 </h2>
               </div>
-              <p className="text-[13px] text-mauve mb-6">
+              <p className="text-[15px] text-mauve mb-6">
                 Across your {skills.jobs_analyzed} analyzed job
                 {skills.jobs_analyzed === 1 ? "" : "s"}
                 {skills.resume_analyzed && (
@@ -177,7 +177,7 @@ export default function InsightsPage() {
               </p>
 
               {skills.skills.length > 0 && (
-                <div className="flex items-center gap-5 mb-5 text-[11px]">
+                <div className="flex items-center gap-5 mb-5 text-[14px]">
                   <span className="inline-flex items-center gap-1.5 text-mauve">
                     <span className="h-2 w-2 rounded-full bg-plum" />
                     You have it
@@ -190,7 +190,7 @@ export default function InsightsPage() {
               )}
 
               {skills.jobs_analyzed < 3 && skills.skills.length > 0 && (
-                <p className="text-[12px] text-mauve/70 italic mb-5">
+                <p className="text-[14px] text-mauve/70 italic mb-5">
                   Save a few more jobs to see meaningful frequency patterns —
                   with only {skills.jobs_analyzed} job
                   {skills.jobs_analyzed === 1 ? "" : "s"}, every skill appears in
@@ -199,7 +199,7 @@ export default function InsightsPage() {
               )}
 
               {skills.skills.length === 0 ? (
-                <p className="text-[13px] text-mauve">
+                <p className="text-[15px] text-mauve">
                   Save jobs to build a picture of what skills matter for your
                   search.
                 </p>
@@ -213,7 +213,7 @@ export default function InsightsPage() {
                       transition={{ duration: 0.3, delay: i * 0.03 }}
                       className="flex items-center gap-3"
                     >
-                      <span className="w-28 text-[13px] text-ink font-medium truncate">
+                      <span className="w-28 text-[15px] text-ink font-medium truncate">
                         {s.canonical}
                       </span>
                       <div className="flex-1 h-1.5 rounded-full bg-blush-100/70 overflow-hidden">
@@ -230,7 +230,7 @@ export default function InsightsPage() {
                           }`}
                         />
                       </div>
-                      <span className="w-12 text-right text-[11px] text-mauve tabular-nums shrink-0">
+                      <span className="w-12 text-right text-[14px] text-mauve tabular-nums shrink-0">
                         {s.frequency_pct.toFixed(0)}%
                       </span>
                     </motion.div>

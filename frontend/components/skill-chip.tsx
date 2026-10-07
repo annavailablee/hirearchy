@@ -58,7 +58,7 @@ export function SkillChip({
         ease: [0.22, 1, 0.36, 1],
       }}
       title={title}
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium ring-1 ${cfg.bg} ${cfg.text} ${cfg.ring}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[14px] font-medium ring-1 ${cfg.bg} ${cfg.text} ${cfg.ring}`}
     >
       <Icon size={11} strokeWidth={2.4} />
       {name}

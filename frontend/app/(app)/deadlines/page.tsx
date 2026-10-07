@@ -105,7 +105,7 @@ export default function DeadlinesPage() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-8"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <CalendarClock size={14} strokeWidth={1.8} />
             Deadlines
           </div>
@@ -227,7 +227,7 @@ function Section({
         >
           {label}
         </h2>
-        <span className="text-[12px] text-mauve/70 tabular-nums">{count}</span>
+        <span className="text-[14px] text-mauve/70 tabular-nums">{count}</span>
       </div>
       <div>{children}</div>
     </motion.section>

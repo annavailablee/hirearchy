@@ -15,10 +15,10 @@ export function BreakdownBar({ item, index }: { item: CategoryScore; index: numb
   return (
     <div>
       <div className="flex items-baseline justify-between mb-1.5">
-        <span className="text-[12px] text-ink font-medium">
+        <span className="text-[14px] text-ink font-medium">
           {LABELS[item.name] ?? item.name}
         </span>
-        <span className="text-[11px] text-mauve tabular-nums">
+        <span className="text-[14px] text-mauve tabular-nums">
           {item.earned.toFixed(0)} / {item.possible.toFixed(0)}
         </span>
       </div>

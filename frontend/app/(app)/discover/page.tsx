@@ -71,7 +71,7 @@ export default function DiscoverPage() {
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="mb-8"
       >
-        <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+        <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
           <Compass size={14} strokeWidth={1.8} />
           Discover
         </div>
@@ -118,7 +118,7 @@ export default function DiscoverPage() {
 
       {/* Result count */}
       {!loading && !error && (
-        <p className="text-[12px] text-mauve/80 mb-4">
+        <p className="text-[14px] text-mauve/80 mb-4">
           {resultCount} {resultCount === 1 ? "opportunity" : "opportunities"}
         </p>
       )}
@@ -187,7 +187,7 @@ function FilterRow({
             <button
               key={opt.value}
               onClick={() => onChange(opt.value)}
-              className={`rounded-full px-3 py-1 text-[11px] font-medium transition-all ring-1 ${
+              className={`rounded-full px-3 py-1 text-[14px] font-medium transition-all ring-1 ${
                 active
                   ? "bg-plum text-blush-50 ring-plum"
                   : "bg-white text-mauve ring-border/60 hover:text-plum hover:ring-border"

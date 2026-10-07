@@ -32,7 +32,7 @@ export function UpcomingRow({ item }: { item: UpcomingItem }) {
       className="flex items-baseline gap-3 py-3 border-b border-border/40 last:border-0"
     >
       <div className="w-16 shrink-0">
-        <p className="text-[11px] uppercase tracking-[0.12em] text-mauve font-medium">
+        <p className="text-[14px] uppercase tracking-[0.12em] text-mauve font-medium">
           {formatDay(item.due_at)}
         </p>
         <p className="text-[10px] text-mauve/70 tabular-nums">
@@ -42,7 +42,7 @@ export function UpcomingRow({ item }: { item: UpcomingItem }) {
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium text-ink truncate">{item.title}</p>
         {item.job_title && (
-          <p className="text-[12px] text-mauve truncate">
+          <p className="text-[14px] text-mauve truncate">
             {item.job_title}
             {item.company ? ` · ${item.company}` : ""}
           </p>

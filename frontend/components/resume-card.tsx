@@ -57,7 +57,7 @@ export function ResumeCard({
                 />
               )}
             </div>
-            <p className="text-[11px] text-mauve truncate mt-0.5">
+            <p className="text-[14px] text-mauve truncate mt-0.5">
               {resume.original_filename}
             </p>
           </div>
@@ -91,7 +91,7 @@ export function ResumeCard({
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-[11px] mt-4 pt-3 border-t border-border/40">
+      <div className="flex items-center justify-between text-[14px] mt-4 pt-3 border-t border-border/40">
         <span className="inline-flex items-center gap-1.5">
           {resume.extraction_status === "success" ? (
             <>

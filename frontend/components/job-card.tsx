@@ -40,7 +40,7 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
             <h3 className="font-display text-xl text-ink leading-tight truncate">
               {job.title}
             </h3>
-            <div className="flex items-center gap-1.5 mt-1 text-[13px] text-mauve">
+            <div className="flex items-center gap-1.5 mt-1 text-[15px] text-mauve">
               <Building2 size={12} strokeWidth={1.8} />
               <span className="truncate">{job.company}</span>
             </div>
@@ -70,7 +70,7 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 text-[11px] text-mauve/70 pt-3 border-t border-border/40">
+        <div className="flex items-center gap-1.5 text-[14px] text-mauve/70 pt-3 border-t border-border/40">
           <Clock size={11} strokeWidth={1.8} />
           <span>
             Added{" "}
@@ -96,7 +96,7 @@ function Pill({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-medium ring-1 ${
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[14px] font-medium ring-1 ${
         accent
           ? "bg-blush-100 text-plum ring-border"
           : "bg-blush-50 text-mauve ring-border/50"

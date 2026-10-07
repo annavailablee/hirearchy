@@ -90,7 +90,7 @@ export default function LoginPage() {
         />
 
         {error && (
-          <div className="text-[13px] text-danger bg-danger/10 border border-danger/20 rounded-md px-3 py-2">
+          <div className="text-[15px] text-danger bg-danger/10 border border-danger/20 rounded-md px-3 py-2">
             {error}
           </div>
         )}
@@ -146,7 +146,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
+      <span className="block text-[14px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
         {label}
       </span>
       <input

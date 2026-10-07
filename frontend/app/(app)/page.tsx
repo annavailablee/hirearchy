@@ -59,7 +59,7 @@ export default function DashboardPage() {
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="mb-10"
       >
-        <p className="text-[13px] text-mauve mb-2 tracking-wide">
+        <p className="text-[15px] text-mauve mb-2 tracking-wide">
           {greeting()},
         </p>
         <h1 className="font-display text-5xl leading-none tracking-tight text-ink">
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                   </h2>
                 </div>
                 {data.attention.overdue_count > 0 && (
-                  <span className="text-[11px] uppercase tracking-[0.12em] text-danger font-medium">
+                  <span className="text-[14px] uppercase tracking-[0.12em] text-danger font-medium">
                     {data.attention.overdue_count} overdue
                   </span>
                 )}
@@ -242,7 +242,7 @@ export default function DashboardPage() {
                     {data.gaps.slice(0, 10).map((g) => (
                       <span
                         key={g}
-                        className="inline-flex items-center rounded-full bg-blush-100 text-plum px-3 py-1 text-[12px] font-medium ring-1 ring-border"
+                        className="inline-flex items-center rounded-full bg-blush-100 text-plum px-3 py-1 text-[14px] font-medium ring-1 ring-border"
                       >
                         {g}
                       </span>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
                   </div>
                   <a
                     href="/skill-gaps"
-                    className="inline-flex items-center gap-1 text-[12px] font-medium text-plum hover:text-ink transition-colors"
+                    className="inline-flex items-center gap-1 text-[14px] font-medium text-plum hover:text-ink transition-colors"
                   >
                     View full analysis
                     <ArrowUpRight size={12} strokeWidth={2.2} />
@@ -296,7 +296,7 @@ function MetricCard({
 
 function EmptyNote({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[13px] text-mauve/80 py-3 leading-relaxed">
+    <p className="text-[15px] text-mauve/80 py-3 leading-relaxed">
       {children}
     </p>
   );

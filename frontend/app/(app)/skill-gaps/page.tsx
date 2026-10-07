@@ -46,7 +46,7 @@ export default function SkillGapsPage() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <TrendingUp size={14} strokeWidth={1.8} />
             Skill Gaps
           </div>
@@ -95,12 +95,12 @@ export default function SkillGapsPage() {
             >
               <div className="flex items-baseline gap-2 mb-6">
                 <h2 className="font-display text-2xl text-ink">Gaps</h2>
-                <span className="text-[12px] text-mauve/70 tabular-nums">
+                <span className="text-[14px] text-mauve/70 tabular-nums">
                   {gaps.length}
                 </span>
               </div>
               {gaps.length === 0 ? (
-                <p className="text-[13px] text-mauve leading-relaxed">
+                <p className="text-[15px] text-mauve leading-relaxed">
                   No significant gaps. Your resume covers the recurring
                   requirements in your target set.
                 </p>
@@ -119,15 +119,15 @@ export default function SkillGapsPage() {
                           <X size={12} strokeWidth={2.4} />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[14px] font-medium text-ink truncate">
+                          <p className="text-[15px] font-medium text-ink truncate">
                             {s.canonical}
                           </p>
-                          <p className="text-[11px] text-mauve/70 capitalize">
+                          <p className="text-[14px] text-mauve/70 capitalize">
                             {s.category}
                           </p>
                         </div>
                       </div>
-                      <span className="text-[12px] text-mauve tabular-nums shrink-0">
+                      <span className="text-[14px] text-mauve tabular-nums shrink-0">
                         {s.frequency_pct.toFixed(0)}%
                       </span>
                     </motion.div>
@@ -149,12 +149,12 @@ export default function SkillGapsPage() {
             >
               <div className="flex items-baseline gap-2 mb-6">
                 <h2 className="font-display text-2xl text-ink">Strengths</h2>
-                <span className="text-[12px] text-mauve/70 tabular-nums">
+                <span className="text-[14px] text-mauve/70 tabular-nums">
                   {strengths.length}
                 </span>
               </div>
               {strengths.length === 0 ? (
-                <p className="text-[13px] text-mauve leading-relaxed">
+                <p className="text-[15px] text-mauve leading-relaxed">
                   Upload a resume so we can identify your strengths.
                 </p>
               ) : (
@@ -172,15 +172,15 @@ export default function SkillGapsPage() {
                           <Check size={12} strokeWidth={2.4} />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[14px] font-medium text-ink truncate">
+                          <p className="text-[15px] font-medium text-ink truncate">
                             {s.canonical}
                           </p>
-                          <p className="text-[11px] text-mauve/70 capitalize">
+                          <p className="text-[14px] text-mauve/70 capitalize">
                             {s.category}
                           </p>
                         </div>
                       </div>
-                      <span className="text-[12px] text-mauve tabular-nums shrink-0">
+                      <span className="text-[14px] text-mauve tabular-nums shrink-0">
                         {s.frequency_pct.toFixed(0)}%
                       </span>
                     </motion.div>

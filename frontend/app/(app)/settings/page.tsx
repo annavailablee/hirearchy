@@ -16,7 +16,7 @@ export default function SettingsPage() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <SettingsIcon size={14} strokeWidth={1.8} />
             Settings
           </div>
@@ -38,15 +38,15 @@ export default function SettingsPage() {
             <h2 className="font-display text-xl text-ink mb-6">Profile</h2>
             <div className="space-y-4">
               <Row icon={<UserIcon size={14} strokeWidth={1.9} />} label="Name">
-                <span className="text-[14px] text-ink">
+                <span className="text-[15px] text-ink">
                   {user?.full_name ?? "—"}
                 </span>
               </Row>
               <Row icon={<Mail size={14} strokeWidth={1.9} />} label="Email">
-                <span className="text-[14px] text-ink">{user?.email}</span>
+                <span className="text-[15px] text-ink">{user?.email}</span>
               </Row>
             </div>
-            <p className="text-[12px] text-mauve/70 mt-6 leading-relaxed">
+            <p className="text-[14px] text-mauve/70 mt-6 leading-relaxed">
               Need to change your email or password? Contact support — self-service
               account editing is coming soon.
             </p>
@@ -54,7 +54,7 @@ export default function SettingsPage() {
 
           <div className="rounded-2xl bg-white ring-1 ring-border/40 shadow-soft p-8">
             <h2 className="font-display text-xl text-ink mb-2">Session</h2>
-            <p className="text-[13px] text-mauve mb-5 leading-relaxed">
+            <p className="text-[15px] text-mauve mb-5 leading-relaxed">
               Sign out of your Hirearchy account on this device.
             </p>
             <button
@@ -67,7 +67,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
-            <p className="text-[13px] text-mauve leading-relaxed">
+            <p className="text-[15px] text-mauve leading-relaxed">
               Notification preferences, appearance, and privacy settings are
               coming in a future release.
             </p>
@@ -92,7 +92,7 @@ function Row({
       <div className="rounded-md bg-blush-100 p-1.5 text-plum shrink-0">
         {icon}
       </div>
-      <span className="text-[11px] uppercase tracking-[0.14em] text-mauve font-medium w-20 shrink-0">
+      <span className="text-[14px] uppercase tracking-[0.14em] text-mauve font-medium w-20 shrink-0">
         {label}
       </span>
       {children}

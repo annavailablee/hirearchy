@@ -174,7 +174,7 @@ export default function ProfilePage() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <User size={14} strokeWidth={1.8} />
             Profile
           </div>
@@ -331,7 +331,7 @@ export default function ProfilePage() {
                 initial={{ opacity: 0, x: 4 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 text-[12px] text-accent"
+                className="inline-flex items-center gap-1.5 text-[14px] text-accent"
               >
                 <Check size={13} strokeWidth={2.4} />
                 Saved
@@ -352,17 +352,17 @@ export default function ProfilePage() {
               animate={{ opacity: 1, y: 0 }}
               className="rounded-2xl bg-blush-50 ring-1 ring-border/40 px-5 py-4"
             >
-              <p className="text-[11px] uppercase tracking-[0.14em] text-mauve mb-2 font-medium">
+              <p className="text-[14px] uppercase tracking-[0.14em] text-mauve mb-2 font-medium">
                 Resume analysis
               </p>
               <ul className="space-y-1">
                 {prefillNotes.map((n, i) => (
-                  <li key={i} className="text-[12px] text-mauve leading-relaxed">
+                  <li key={i} className="text-[14px] text-mauve leading-relaxed">
                     · {n}
                   </li>
                 ))}
               </ul>
-              <p className="text-[11px] text-mauve/70 mt-3">
+              <p className="text-[14px] text-mauve/70 mt-3">
                 Review the filled fields before saving. Nothing is saved until
                 you press <span className="font-medium">Save profile</span>.
               </p>
@@ -376,7 +376,7 @@ export default function ProfilePage() {
                 initial={{ opacity: 0, x: 4 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 text-[12px] text-accent"
+                className="inline-flex items-center gap-1.5 text-[14px] text-accent"
               >
                 <Check size={13} strokeWidth={2.4} />
                 Saved
@@ -423,7 +423,7 @@ function Field({
 }) {
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="block text-[11px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
+      <span className="block text-[14px] uppercase tracking-[0.14em] text-mauve mb-1.5 font-medium">
         {label}
       </span>
       {children}
@@ -504,7 +504,7 @@ function ChipInput({
           {values.map((v) => (
             <span
               key={v}
-              className="inline-flex items-center gap-1 rounded-full bg-white ring-1 ring-border/60 px-2.5 py-0.5 text-[12px] text-ink"
+              className="inline-flex items-center gap-1 rounded-full bg-white ring-1 ring-border/60 px-2.5 py-0.5 text-[14px] text-ink"
             >
               {v}
               <button
@@ -570,7 +570,7 @@ function MultiChipSelect({
             key={o.value}
             type="button"
             onClick={() => toggle(o.value)}
-            className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium ring-1 transition-all ${
+            className={`rounded-full px-3.5 py-1.5 text-[14px] font-medium ring-1 transition-all ${
               active
                 ? "bg-plum text-blush-50 ring-plum"
                 : "bg-white text-mauve ring-border/60 hover:text-plum hover:ring-border"

@@ -84,7 +84,7 @@ export function Sidebar() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className={`relative flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-colors ${
+                      className={`relative flex items-center gap-3 px-3 py-2 rounded-lg text-[15px] transition-colors ${
                         isActive
                           ? "text-blush-50"
                           : "text-blush-100/70 hover:text-blush-50 hover:bg-white/5"

@@ -112,7 +112,7 @@ export default function ResumesPage() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-8"
         >
-          <div className="flex items-center gap-2 mb-2 text-mauve text-[13px]">
+          <div className="flex items-center gap-2 mb-2 text-mauve text-[15px]">
             <FileText size={14} strokeWidth={1.8} />
             Resumes
           </div>
@@ -185,27 +185,27 @@ export default function ResumesPage() {
               </div>
 
               {!activeResume ? (
-                <p className="text-[13px] text-mauve leading-relaxed">
+                <p className="text-[15px] text-mauve leading-relaxed">
                   Select a resume to see the skills Hirearchy extracted from it.
                 </p>
               ) : activeResume.extraction_status !== "success" ? (
-                <p className="text-[13px] text-danger leading-relaxed">
+                <p className="text-[15px] text-danger leading-relaxed">
                   We couldn&apos;t extract text from this resume. Try a different
                   PDF — scanned images don&apos;t work.
                 </p>
               ) : skillsLoading ? (
-                <div className="flex items-center gap-2 text-mauve text-[12px]">
+                <div className="flex items-center gap-2 text-mauve text-[14px]">
                   <div className="h-3 w-3 animate-spin rounded-full border-2 border-mauve/30 border-t-plum" />
                   Extracting…
                 </div>
               ) : activeSkills.length === 0 ? (
-                <p className="text-[13px] text-mauve leading-relaxed">
+                <p className="text-[15px] text-mauve leading-relaxed">
                   No skills detected. This usually means the resume text
                   doesn&apos;t contain standard tech keywords.
                 </p>
               ) : (
                 <>
-                  <p className="text-[11px] text-mauve/70 mb-3">
+                  <p className="text-[14px] text-mauve/70 mb-3">
                     {activeSkills.length} skill
                     {activeSkills.length === 1 ? "" : "s"} found in{" "}
                     <span className="font-medium text-mauve">
