@@ -36,3 +36,12 @@ export type Profile = {
   work_authorization: string | null;
   updated_at: string;
 };
+
+export type ProfileSuggestion = {
+  degree: string | null;
+  education: string | null;
+  graduation_year: number | null;
+  source_resume_id: string;
+  source_resume_name: string;
+  notes: string[];
+};

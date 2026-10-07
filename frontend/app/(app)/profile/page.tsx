@@ -10,6 +10,8 @@ import {
   REMOTE_PREF_OPTIONS,
   type Profile,
 } from "@/lib/profile-types";
+import { Sparkles } from "lucide-react";
+import type { ProfileSuggestion } from "@/lib/profile-types";
 
 type Draft = {
   education: string;
@@ -67,7 +69,8 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedAt, setSavedAt] = useState<number | null>(null);
-
+  const [prefilling, setPrefilling] = useState(false);
+  const [prefillNotes, setPrefillNotes] = useState<string[] | null>(null);
   useEffect(() => {
     let cancelled = false;
     apiFetch<Profile>("/profile")
@@ -112,6 +115,44 @@ export default function ProfilePage() {
       setSaving(false);
     }
   }
+
+  async function prefillFromResume() {
+    if (!draft) return;
+    setPrefilling(true);
+    setPrefillNotes(null);
+    setError(null);
+    try {
+      const s = await apiFetch<ProfileSuggestion>("/profile/suggestions");
+      // Merge only the fields that came back non-null. Never overwrite
+      // values the user already filled in.
+      setDraft({
+        ...draft,
+        degree: draft.degree || s.degree || "",
+        education: draft.education || s.education || "",
+        graduation_year:
+          draft.graduation_year ||
+          (s.graduation_year ? String(s.graduation_year) : ""),
+      });
+      setPrefillNotes(s.notes);
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(
+          err.status === 400
+            ? "Upload a resume first — no primary resume found."
+            : err.status === 404
+              ? "Resume not found."
+              : err.status === 422
+                ? "We couldn't read text from your resume (it might be a scanned image)."
+                : `Could not prefill (${err.status})`
+        );
+      } else {
+        setError("Network error.");
+      }
+    } finally {
+      setPrefilling(false);
+    }
+  }
+
 
   if (loading || !draft) {
     return (
@@ -275,6 +316,58 @@ export default function ProfilePage() {
               </Field>
             </div>
           </Section>
+          {/* Save bar */}
+          <div className="sticky bottom-6 flex items-center justify-end gap-3">
+            <button
+              onClick={prefillFromResume}
+              disabled={prefilling}
+              className="inline-flex items-center gap-2 rounded-lg bg-white ring-1 ring-border text-plum px-4 py-2.5 text-sm font-medium hover:bg-blush-50 disabled:opacity-50 transition-colors shadow-soft"
+            >
+              <Sparkles size={14} strokeWidth={2} />
+              {prefilling ? "Reading resume…" : "Prefill from resume"}
+            </button>
+            {savedAt && (
+              <motion.span
+                initial={{ opacity: 0, x: 4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0 }}
+                className="inline-flex items-center gap-1.5 text-[12px] text-accent"
+              >
+                <Check size={13} strokeWidth={2.4} />
+                Saved
+              </motion.span>
+            )}
+            <button
+              onClick={save}
+              disabled={saving}
+              className="inline-flex items-center gap-2 rounded-lg bg-plum text-blush-50 px-5 py-2.5 text-sm font-medium hover:bg-ink disabled:opacity-50 transition-colors shadow-lift"
+            >
+              <Save size={14} strokeWidth={2.2} />
+              {saving ? "Saving…" : "Save profile"}
+            </button>
+          </div>
+          {prefillNotes && prefillNotes.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl bg-blush-50 ring-1 ring-border/40 px-5 py-4"
+            >
+              <p className="text-[11px] uppercase tracking-[0.14em] text-mauve mb-2 font-medium">
+                Resume analysis
+              </p>
+              <ul className="space-y-1">
+                {prefillNotes.map((n, i) => (
+                  <li key={i} className="text-[12px] text-mauve leading-relaxed">
+                    · {n}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-[11px] text-mauve/70 mt-3">
+                Review the filled fields before saving. Nothing is saved until
+                you press <span className="font-medium">Save profile</span>.
+              </p>
+            </motion.div>
+          )}
 
           {/* Save bar */}
           <div className="sticky bottom-6 flex items-center justify-end gap-3">
