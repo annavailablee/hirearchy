@@ -64,3 +64,39 @@ export async function apiFetch<T>(
 
   return body as T;
 }
+
+export async function apiUpload<T>(
+  path: string,
+  formData: FormData
+): Promise<T> {
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  // Intentionally do NOT set Content-Type — the browser sets it with the
+  // multipart boundary. Setting it manually breaks the request.
+
+  const res = await fetch(`/api${path}`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  const contentType = res.headers.get("content-type") ?? "";
+  const body = contentType.includes("application/json")
+    ? await res.json()
+    : await res.text();
+
+  if (!res.ok) {
+    const detail =
+      typeof body === "object" && body && "detail" in body
+        ? (body as { detail: unknown }).detail
+        : body;
+    throw new ApiError(
+      res.status,
+      detail,
+      typeof detail === "string" ? detail : `Upload failed (${res.status})`
+    );
+  }
+
+  return body as T;
+}
