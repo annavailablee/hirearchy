@@ -134,8 +134,7 @@ export default function DashboardPage() {
           </motion.section>
 
           {/* Two-column: Attention | Skills */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {/* Attention Required */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">            {/* Attention Required */}
             <motion.section
               variants={{
                 hidden: { opacity: 0, y: 8 },
@@ -198,8 +197,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Two-column: Upcoming | Gaps */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {/* Upcoming */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">            {/* Upcoming */}
             <motion.section
               variants={{
                 hidden: { opacity: 0, y: 8 },
